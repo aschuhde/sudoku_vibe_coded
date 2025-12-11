@@ -1,0 +1,92 @@
+name: Build and Publish Docker Image
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    tags: [ "v*.*.*", "v*.*", "v*" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+env:
+  # Default to GitHub Container Registry. To use Docker Hub, set REGISTRY and IMAGE_NAME via repo vars/secrets
+  REGISTRY: ghcr.io
+  IMAGE_NAME: aschuhde/${{ github.event.repository.name }}
+
+jobs:
+  docker:
+    name: Build and Publish
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write   # needed for GHCR with GITHUB_TOKEN
+      id-token: write   # future OIDC use
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      # Login to registry
+      - name: Log in to GHCR
+        if: env.REGISTRY == 'ghcr.io'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to Docker Hub
+        if: env.REGISTRY == 'docker.io'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build (PRs only) and Publish (push/tags)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          provenance: false
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Show image tags
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Pushed:"
+          echo "${{ steps.meta.outputs.tags }}"
+
+      - name: Advice for Kubernetes image reference
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Set your k8s image to: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest (or one of the tags above)"
+
+# How to switch to Docker Hub:
+#  - In repo Settings → Secrets and variables → Actions, add secrets DOCKERHUB_USERNAME and DOCKERHUB_TOKEN.
+#  - In repo Settings → Variables → Actions, set REGISTRY=docker.io and IMAGE_NAME=<username>/sudoku (or use env overrides).
+#  - Optionally remove the GHCR login step.
