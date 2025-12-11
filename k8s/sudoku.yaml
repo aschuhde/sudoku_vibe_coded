@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sudoku-app
+  labels:
+    app: sudoku
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sudoku
+  template:
+    metadata:
+      labels:
+        app: sudoku
+    spec:
+      containers:
+        - name: sudoku
+          # Replace with your registry/image:tag before deploying
+          image: your-docker-registry/sudoku:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sudoku-service
+  labels:
+    app: sudoku
+spec:
+  selector:
+    app: sudoku
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+  type: ClusterIP

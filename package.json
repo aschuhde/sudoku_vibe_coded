@@ -1,0 +1,21 @@
+{
+  "name": "test-sudoku",
+  "version": "1.0.0",
+  "description": "Simple Node.js + jQuery Sudoku generator and solver",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "sudoku",
+    "node",
+    "express",
+    "jquery"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
