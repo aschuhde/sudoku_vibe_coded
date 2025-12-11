@@ -592,7 +592,7 @@ $(function () {
     setCellValueAt(currentIndex, String(num));
   });
 
-  $keypad.on('click', '.kp-erase', function(){
+  $(".kp-erase").on('click', function(){
     focusCurrent();
     const [r,c] = getRCFromIndex(currentIndex);
     const cells = $board.find('.cell');
