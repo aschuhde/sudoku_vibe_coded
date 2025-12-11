@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: sudoku
-          # Replace with your registry/image:tag before deploying
-          image: your-docker-registry/sudoku:latest
+          # Deployed image in GHCR under the aschuhde namespace
+          image: ghcr.io/aschuhde/test-sudoku:latest
           imagePullPolicy: IfNotPresent
           env:
             - name: PORT
