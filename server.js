@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const sudoku = require('./src/sudoku');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,7 +13,30 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true });
 });
 
-app.get('/api/generate', (req, res) => {
+// Rate limiting
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  limit: 60, // 60 req/min per IP for general API
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+const heavyLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 20, // stricter for compute heavy endpoints
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests to this endpoint. Slow down.' }
+});
+
+// Apply general limiter to API routes except health
+app.use('/api', (req, res, next) => {
+  if (req.path === '/health') return next();
+  return apiLimiter(req, res, next);
+});
+
+app.get('/api/generate', heavyLimiter, (req, res) => {
   const { difficulty = 'medium' } = req.query;
   try {
     const puzzle = sudoku.generate(String(difficulty));
@@ -22,7 +46,7 @@ app.get('/api/generate', (req, res) => {
   }
 });
 
-app.post('/api/solve', (req, res) => {
+app.post('/api/solve', heavyLimiter, (req, res) => {
   const { board } = req.body || {};
   if (!Array.isArray(board) || board.length !== 9 || !board.every(r => Array.isArray(r) && r.length === 9)) {
     return res.status(400).json({ error: 'Invalid board format' });

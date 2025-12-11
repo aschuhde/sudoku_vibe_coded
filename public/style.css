@@ -2,17 +2,17 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;align-items:center}
-.container{width:min(92vw,920px);margin:24px auto;padding:16px 20px;background:var(--panel);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.container{width:min(92vw,920px);margin:18px auto;padding:10px 12px;background:var(--panel);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 h1{margin:0 0 16px;font-weight:700;letter-spacing:.5px}
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-select,button{background:#0b1220;color:var(--text);border:1px solid var(--grid);border-radius:8px;padding:10px 14px;font-size:16px}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+select,button{background:#0b1220;color:var(--text);border:1px solid var(--grid);border-radius:8px;padding:8px 10px;font-size:15px}
 button{cursor:pointer}
 button:hover{border-color:var(--accent);box-shadow:0 0 0 2px rgba(34,211,238,.15) inset}
-#board{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;background:var(--grid);padding:3px;border-radius:10px;border:4px solid var(--accent);box-shadow:0 0 0 2px rgba(34,211,238,.15);margin:auto}
+#board{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;background:var(--grid);padding:2px;border-radius:10px;border:2px solid var(--accent);box-shadow:0 0 0 2px rgba(34,211,238,.15);margin:auto}
 .cell{position:relative;background:transparent}
-.cell input{width:100%;aspect-ratio:1/1;background:var(--cell);color:var(--text);border:none;text-align:center;font-size:clamp(18px, 2.5vw, 28px);border-radius:6px;outline:none;transition:background .15s ease, box-shadow .15s ease;-webkit-user-select:none;user-select:none}
+.cell input{width:100%;aspect-ratio:1/1;background:var(--cell);color:var(--text);border:none;text-align:center;font-size:clamp(16px, 2.2vw, 24px);border-radius:6px;outline:none;transition:background .15s ease, box-shadow .15s ease;-webkit-user-select:none;user-select:none}
 .cell:nth-child(odd) input{background:var(--cell-alt)}
-.fixed input{background:var(--fixed);color:#cbd5e1}
+.fixed input{background:var(--fixed) !important;color:#cbd5e1}
 .cell input:focus{box-shadow:0 0 0 2px var(--accent) inset}
 .cell.thick-right{border-right:1px solid var(--accent)}
 .cell.thick-bottom{border-bottom:1px solid var(--accent)}
@@ -21,7 +21,7 @@ button:hover{border-color:var(--accent);box-shadow:0 0 0 2px rgba(34,211,238,.15
 .note{opacity:.85}
 .fixed .notes{color:#7c8596}
 .conflict .notes{color:#c46b6b}
-.status{margin-top:12px;color:var(--muted)}
+.status{margin-top:8px;color:var(--muted)}
 footer{margin:10px 0 24px;color:var(--muted);font-size:12px}
 
 /* Celebration styles */
@@ -51,22 +51,20 @@ footer{margin:10px 0 24px;color:var(--muted);font-size:12px}
 }
 
 /* Keypad */
-.keypad{margin:14px auto 0;display:grid;gap:8px;max-width:520px}
-.keypad .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.kp{padding:14px 12px;font-size:20px;background:#0b1220;border:1px solid var(--grid);border-radius:10px}
+.keypad{margin:10px auto 0;display:flex;gap:6px;max-width:920px;justify-content:center;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;padding:2px}
+.kp{padding:8px 10px;font-size:16px;background:#0b1220;border:1px solid var(--grid);border-radius:8px;flex:0 0 auto}
 .kp:hover{border-color:var(--accent)}
-.kp-erase,.kp-back{grid-column:span 1}
-.kp-hint{font-size:12px;color:var(--muted);text-align:center}
+.kp-hint{font-size:11px;color:var(--muted);text-align:center;flex-basis:100%;margin-top:4px}
 
 /* Responsive tweaks */
 @media (max-width: 768px){
-  .container{width:min(96vw, 720px);padding:14px}
-  .controls{gap:8px}
-  .kp{padding:16px;font-size:22px}
+  .container{width:min(99vw, 720px);padding:3px}
+  .controls{gap:6px}
+  .kp{padding:10px 12px;font-size:16px}
 }
 @media (max-width: 480px){
-  .container{margin:12px auto}
+  .container{margin:10px 0}
   h1{font-size:20px}
-  select,button{font-size:16px;padding:10px 12px}
-  .kp{padding:16px;font-size:22px}
+  select,button{font-size:14px;padding:8px 10px}
+  .kp{padding:8px 10px;font-size:15px}
 }

@@ -610,11 +610,7 @@ $(function () {
     clearCellAt(currentIndex);
   });
 
-  $keypad.on('click', '.kp-back', function(){
-    focusCurrent();
-    // Backspace behaves like erase for single-char cells
-    clearCellAt(currentIndex);
-  });
+  // Backspace button removed per requirements; erase covers clearing behavior
 
   // Events
   $('#btn-generate').on('click', generate);

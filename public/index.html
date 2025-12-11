@@ -11,7 +11,6 @@
 </head>
 <body>
   <div class="container">
-    <h1>Sudoku</h1>
     <div class="controls">
       <label for="difficulty">Difficulty:</label>
       <select id="difficulty">
@@ -31,32 +30,25 @@
 
     <!-- On-screen keypad for mobile/touch to avoid opening OS keyboard -->
     <div id="keypad" class="keypad" aria-label="Sudoku keypad" role="group">
-      <div class="row">
-        <button class="kp kp-num" data-num="1" aria-label="Number 1">1</button>
-        <button class="kp kp-num" data-num="2" aria-label="Number 2">2</button>
-        <button class="kp kp-num" data-num="3" aria-label="Number 3">3</button>
-      </div>
-      <div class="row">
-        <button class="kp kp-num" data-num="4" aria-label="Number 4">4</button>
-        <button class="kp kp-num" data-num="5" aria-label="Number 5">5</button>
-        <button class="kp kp-num" data-num="6" aria-label="Number 6">6</button>
-      </div>
-      <div class="row">
-        <button class="kp kp-num" data-num="7" aria-label="Number 7">7</button>
-        <button class="kp kp-num" data-num="8" aria-label="Number 8">8</button>
-        <button class="kp kp-num" data-num="9" aria-label="Number 9">9</button>
-      </div>
-      <div class="row">
-        <button class="kp kp-erase" data-action="erase" aria-label="Erase cell">Erase</button>
-        <button class="kp kp-back" data-action="back" aria-label="Backspace">⌫</button>
-      </div>
+      <button class="kp kp-num" data-num="1" aria-label="Number 1">1</button>
+      <button class="kp kp-num" data-num="2" aria-label="Number 2">2</button>
+      <button class="kp kp-num" data-num="3" aria-label="Number 3">3</button>
+      <button class="kp kp-num" data-num="4" aria-label="Number 4">4</button>
+      <button class="kp kp-num" data-num="5" aria-label="Number 5">5</button>
+      <button class="kp kp-num" data-num="6" aria-label="Number 6">6</button>
+      <button class="kp kp-num" data-num="7" aria-label="Number 7">7</button>
+      <button class="kp kp-num" data-num="8" aria-label="Number 8">8</button>
+      <button class="kp kp-num" data-num="9" aria-label="Number 9">9</button>
+    </div>
+    <div style="display: flex; align-items: center;">
       <div class="kp-hint" aria-hidden="true">Tap a cell, then use the keypad. Notes mode toggles digits.</div>
+      <button class="kp kp-erase" data-action="erase" aria-label="Erase cell">Erase</button>
     </div>
 
     <div id="status" class="status" aria-live="polite"></div>
   </div>
   <footer>
-    <span>Node.js + jQuery Sudoku</span>
+    <span>Fully Vibe Coded</span>
   </footer>
 </body>
 </html>
